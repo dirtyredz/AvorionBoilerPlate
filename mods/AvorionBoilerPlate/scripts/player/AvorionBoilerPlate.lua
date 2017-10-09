@@ -76,8 +76,8 @@ function AvorionBoilerPlate.initialize()
     --Remember the client can only do so much here, it cant use server protected functions
     -- Print will print both to the client log and the server log, depending on whos calling it
     -- Client print will appear in white inside the console.
-    modConfig.print('Notice how this print is white instead of blue like the other prints?',logLevels.trace)
-    modConfig.print('Thats becuase any print done on the client is shown as white, and printed to the clients log not the servers',logLevels.trace)
+    modConfig.print('Notice how this print is white instead of blue like the other prints?')
+    modConfig.print('Thats becuase any print done on the client is shown as white, and printed to the clients log not the servers')
 
   end
 
@@ -101,7 +101,7 @@ function AvorionBoilerPlate.updateServer(timeStep)
   -- increment this variable every 5th second/frame
   SuperImportantValue = SuperImportantValue + 1
   -- Were using the debug loglevel here so if we want to see this in game we have to set the consolelevel with this command in game: /consolelevel debug
-  modConfig.print('Dirtyredz is',SuperImportantValue,'times cooler!!',logLevels.Debug)
+  modConfig.print('Dirtyredz is',SuperImportantValue,'times cooler!!',logLevels.debug)
 end
 
 -- this function gets called once each frame, on client only

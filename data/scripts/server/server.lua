@@ -8,6 +8,13 @@ function onStartUp()
     Server():registerCallback("onPlayerLogOff", "onPlayerLogOff")
     Galaxy():registerCallback("onPlayerCreated", "onPlayerCreated")
     Galaxy():registerCallback("onFactionCreated", "onFactionCreated")
+
+    --Added by LogLevels to set the default levels for the console
+    print('-- Log Level set to: debug --')
+    if not Server():getValue('log_level') then
+      local levels = require("mods/LogLevels/scripts/lib/LogLevels")
+      Server():setValue('console_level',levels.all)
+    end
 end
 
 function onShutDown()
