@@ -1,4 +1,5 @@
 local Config = {}
+--These are currently only used for prints, but planned for future use when steam support is available
 Config.name = "AvorionBoilerPlate"
 Config.author = "Dirtyredz"
 Config.homepage = "https://github.com/dirtyredz/AvorionBoilerPlate"

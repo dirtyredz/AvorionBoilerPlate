@@ -1,10 +1,21 @@
+-- this is so the script won't crash when executed in a context where there's no onServer() or onClient() function available -
+-- naturally those functions should return false then
+if not onServer then onServer = function() return false end end
+if not onClient then onClient = function() return false end end
+
+-- A few things to never do here:
+-- NEVER terminate() before initialize, this will crash the server
+-- NEVER terminate() inside of a secure or restore function
+
 -- constants
 local MODULE = 'AvorionBoilerPlate' -- our module name
 
 -- general
 local modsDir = "mods/"
 local basePath = modsDir .. MODULE
-local modConfig = require(basePath .. '/config/' .. MODULE)
+-- Here we will require this mods config file
+-- pcall is used to capture the event in the case require was unable to load the config file.
+modConfigExsist, modConfig = pcall(require, basePath .. '/config/' .. MODULE)
 
 -- Script variables
 local SuperImportantValue = 0
@@ -41,15 +52,20 @@ end
 
 -- this function gets called when the script is attached to the player
 function AvorionBoilerPlate.initialize()
+  -- Here were checking if this mods config file was properly loaded.
+  -- If it wasn't Print the reason why and Terminate the script so it is un-attached from the player
+  -- terminate() is used to destroy a script effectivaly removing it from the player.
+  if not modConfigExsist then print(modConfig); terminate(); return end
+
   --Player() returns the current player this script is attached to
   local player = Player()
 
-  --print accepts multiple arguments
-  --you can either concatenate or agurment seperate what your wanting to print to the console
-  --Using modConfig allows us to use the print function settup in the config file so our mod name and mod version are always printed infront of our print
-  --Using logLevels.trace, allows us to tell Loglevels that this is a trace print, Only printing it when the console is settup to print trace and below.
+  -- print accepts multiple arguments
+  -- you can either concatenate or agurment seperate what your wanting to print to the console
+  -- Using modConfig allows us to use the print function settup in the config file so our mod name and mod version are always printed infront of our print
+  -- Using logLevels.trace, allows us to tell Loglevels that this is a trace print, Only printing it when the console is settup to print trace and below.
   modConfig.print('Initialized, on player:',player.name,logLevels.trace)
-  --modConfig.print('Initialized, on player:' .. player.name)--Example of print concatenation
+  -- modConfig.print('Initialized, on player:' .. player.name)--Example of print concatenation
 
   -- Here is a unique function exposed to all of avorion
   -- its important to remeber that a script runs in tandom with its client counterpart
@@ -59,12 +75,12 @@ function AvorionBoilerPlate.initialize()
   -- You want to make sure important thing like paying money and attaching scripts is done on the server.
   if onServer() then
 
-    --This is an example of how you would attach a callback function to a script
-    --Here were attachng the callback named onSectorEntered(1st arg), to the function in this script named onSectorEntered(2nd arg)
-    --The function itself is placed further down the file, ignore the namespacing (AvorionBoilerPlate.) here as the callback will automatically search insde this scripts namespace
+    -- This is an example of how you would attach a callback function to a script
+    -- Here were attachng the callback named onSectorEntered(1st arg), to the function in this script named onSectorEntered(2nd arg)
+    -- The function itself is placed further down the file, ignore the namespacing (AvorionBoilerPlate.) here as the callback will automatically search insde this scripts namespace
     player:registerCallback("onSectorEntered", "onSectorEntered")
 
-    --Here were attachng the callback named onShipChanged(1st arg), to the function in this script named onShipChanged(2nd arg)
+    -- Here were attachng the callback named onShipChanged(1st arg), to the function in this script named onShipChanged(2nd arg)
     player:registerCallback("onShipChanged", "onShipChanged")
 
   end
@@ -73,7 +89,7 @@ function AvorionBoilerPlate.initialize()
   -- This function will return true only when the script is being executed on the client side
   -- Client side handle things like display information to the screen, or generate the various UI's/Interfaces/Menus that you use and see
   if onClient() then
-    --Remember the client can only do so much here, it cant use server protected functions
+    -- Remember the client can only do so much here, it cant use server protected functions
     -- Print will print both to the client log and the server log, depending on whos calling it
     -- Client print will appear in white inside the console.
     modConfig.print('Notice how this print is white instead of blue like the other prints?')
@@ -85,10 +101,10 @@ end
 
 -- will control how often update/updateClient/updateServer are called.
 -- without this function those functions will be called each frame
--- returning any value here will tell those functions to only update every x second/frame
+-- returning any value here will tell those functions to only update every x second
 function AvorionBoilerPlate.getUpdateInterval()
-  --Can accept int or float
-  return 5 --update every 5th second/frame
+  -- Can accept int or float
+  return 5 -- update every 5th second
 end
 
 -- this function gets called once each frame, on client and server
@@ -98,7 +114,7 @@ end
 
 -- this function gets called once each frame, on server only
 function AvorionBoilerPlate.updateServer(timeStep)
-  -- increment this variable every 5th second/frame
+  -- increment this variable every 5th second
   SuperImportantValue = SuperImportantValue + 1
   -- Were using the debug loglevel here so if we want to see this in game we have to set the consolelevel with this command in game: /consolelevel debug
   modConfig.print('Dirtyredz is',SuperImportantValue,'times cooler!!',logLevels.debug)
@@ -109,36 +125,36 @@ function AvorionBoilerPlate.updateClient(timeStep)
 
 end
 
---This is one example of using a player callback function
---you can view all player callback functions here: avorion/Documentation/Player Callback.html
---This specific callback will be called whenever the players ships ID changes (when changing ships)
+-- This is one example of using a player callback function
+-- you can view all player callback functions here: avorion/Documentation/Player Callback.html
+-- This specific callback will be called whenever the players ships ID changes (when changing ships)
 function AvorionBoilerPlate.onShipChanged(playerIndex, craftIndex)
-  --lets get the current player
+  -- lets get the current player
   local player = Player()
-  --This is a fallback in the event this function was called on the wrong player (Trust me on this, can happen with callbacks)
+  -- This is a fallback in the event this function was called on the wrong player (Trust me on this, can happen with callbacks)
   if Player().index ~= playerIndex then return end
 
-  --If we didnt get a craft index return
+  -- If we didnt get a craft index return
   if not craftIndex then return end
 
-  --Assign the new craft to an Entity object so we can use it.
+  -- Assign the new craft to an Entity object so we can use it.
   local craft = Entity(craftIndex)
 
-  --Print to the console which player has entered which craft
+  -- Print to the console which player has entered which craft
   modConfig.print(player.name, ', Has entered craft:',craft.name,logLevels.info)
 
 end
 
---This is one example of using a player callback function
---you can view all player callback functions here: avorion/Documentation/Player Callback.html
---This specific callback will be called whenever the players Enters a sector
+-- This is one example of using a player callback function
+-- you can view all player callback functions here: avorion/Documentation/Player Callback.html
+-- This specific callback will be called whenever the players Enters a sector
 function AvorionBoilerPlate.onSectorEntered(playerIndex, x, y)
-  --lets get the current player
+  -- lets get the current player
   local player = Player()
-  --This is a fallback in the event this function was called on the wrong player (Trust me on this, can happen with callbacks)
+  -- This is a fallback in the event this function was called on the wrong player (Trust me on this, can happen with callbacks)
   if Player().index ~= playerIndex then return end
 
-  --Print to the console which player has entered which sector
+  -- Print to the console which player has entered which sector
   modConfig.print(player.name, ', Has entered sector:',x,y,logLevels.info)
 
 end
