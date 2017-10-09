@@ -1,10 +1,10 @@
 local Config = {}
-Config.name = "AvorionBoilerPlate"
+Config.name = "LogLevels"
 Config.author = "Dirtyredz"
-Config.homepage = "https://github.com/dirtyredz/AvorionBoilerPlate"
-Config.tags = {"boilerPlate"}
+Config.homepage = "https://github.com/dirtyredz/LogLevels"
+Config.tags = {"Log","Console","Debug","Levels"}
 Config.version = {
-    major=1, minor=0, patch = 0,
+    major=1, minor=1, patch = 0,
     string = function()
         return  Config.version.major .. '.' ..
                 Config.version.minor .. '.' ..
@@ -13,16 +13,8 @@ Config.version = {
 }
 
 Config.dependencies = {
-    basegame = {major=0, minor=14, patch=2},
+    basegame = {major=0, minor=14, patch=0},
     mods = {
-        {
-            name = 'LogLevels',
-            version = {major=1, minor=1, patch=0}
-        },
-        {
-            name = 'CBA',
-            version = {major=1, minor=0, patch=0}
-        }
     }
 }
 
