@@ -28,7 +28,7 @@ Config.dependencies = {
 
 function Config.print(...)
   local args = table.pack(...)
-  table.insert(args,1,"[" .. Config.name .. "][" .. Config.version.string .. "]")
+  table.insert(args,1,"[" .. Config.name .. "][" .. Config.version.string() .. "]")
   print(table.unpack(args))
 end
 
