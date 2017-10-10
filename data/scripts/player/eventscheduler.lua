@@ -122,6 +122,16 @@ if not success then print(returned) end
 -- an example of updating a local variable without overwriting all its related functions
 local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.Locals_eventscheduler")
 if not success then print(returned); else events = EventScheduler.addCustomEvents(events); end
+-- Its important to remeber that this works becuase4 were only updating the table once
 
+
+-- Overwriting_eventscheduler
+-- an example of changing the initialize() function, while still using the original locals
+local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.Overwriting_eventscheduler")
+if not success then print(returned);
+else
+  function EventScheduler.GetLocals() return events, pause end
+  function EventScheduler.SetLocals(locals) events = locals.events; pause = locals.pause end;
+end
 
 end
