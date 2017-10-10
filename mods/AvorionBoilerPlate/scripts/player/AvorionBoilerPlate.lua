@@ -15,7 +15,7 @@ local modsDir = "mods/"
 local basePath = modsDir .. MODULE
 -- Here we will require this mods config file
 -- pcall is used to capture the event in the case require was unable to load the config file.
-modConfigExsist, modConfig = pcall(require, basePath .. '/config/' .. MODULE)
+local modConfigExsist, modConfig = pcall(require, basePath .. '/config/' .. MODULE)
 
 -- Script variables
 local SuperImportantValue = 0

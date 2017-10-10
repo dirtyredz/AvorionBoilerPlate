@@ -116,13 +116,13 @@ end
 -- Everything above this comment is 100% vanilla
 -- Here is where we will extend the file so that we can keep clear seperation between vanilla and modded.
 
--- As instructed in /mods/AvorionBoilerPlate/scripts/player/eventscheduler.lua, you should have coppied over these two lines
-
-local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/eventscheduler.lua")
+-- Extending_eventscheduler
+-- An example of extending the updateServer() function
+local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/Extending_eventscheduler.lua")
 if not success then print(returned) end
 
---[[ This is a shorter way of extending the file, but doesnt print the reason why it fails if it does. This line is usefull for release of your mod but not debugging.
 
-if not pcall(require, "mods/AvorionBoilerPlate/scripts/player/eventscheduler ") then print("Mod: AvorionBoilerPlate, failed to extend eventscheduler.lua") end
-
-]]
+-- Locals_eventscheduler
+-- an example of updating a local variable without overwriting all its related functions
+local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/Locals_eventscheduler.lua")
+if not success then print(returned); else events = EventSheduler.addCustomEvents(events); end
