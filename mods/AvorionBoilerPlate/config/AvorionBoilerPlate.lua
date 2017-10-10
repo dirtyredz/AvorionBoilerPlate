@@ -33,4 +33,6 @@ function Config.print(...)
   print(table.unpack(args))
 end
 
+Config.ModSpecificVariable = 'Your Mod Config Setting HERE!!'
+
 return Config

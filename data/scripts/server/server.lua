@@ -3,18 +3,14 @@ package.path = package.path .. ";data/scripts/server/?.lua"
 require ("factions")
 require ("stringutility")
 
+
+
 function onStartUp()
     Server():registerCallback("onPlayerLogIn", "onPlayerLogIn")
     Server():registerCallback("onPlayerLogOff", "onPlayerLogOff")
     Galaxy():registerCallback("onPlayerCreated", "onPlayerCreated")
     Galaxy():registerCallback("onFactionCreated", "onFactionCreated")
 
-    --Added by LogLevels to set the default levels for the console
-    print('-- Log Level set to: debug --')
-    if not Server():getValue('log_level') then
-      local levels = require("mods/LogLevels/scripts/lib/LogLevels")
-      Server():setValue('console_level',levels.all)
-    end
 end
 
 function onShutDown()
@@ -61,10 +57,6 @@ function onPlayerLogIn(playerIndex)
     player:addScriptOnce("story/spawnguardian.lua")
     player:addScriptOnce("story/spawnadventurer.lua")
 
-    --Added by AvorionBoilerPlate, this is you a script is attached to a player object.
-    player:addScriptOnce("mods/AvorionBoilerPlate/scripts/player/AvorionBoilerPlate.lua")
-
-
     matchResources(player)
 end
 
@@ -72,4 +64,10 @@ function onPlayerLogOff(playerIndex)
     local player = Player(playerIndex)
     Server():broadcastChatMessage("Server", 0, "Player %s left the galaxy"%_t, player.name)
 
+end
+
+local success, b = pcall(require, 'mods/AvorionBoilerPlate/scripts/server/server')
+if success then
+  if b.onPlayerLogIn then local a = onPlayerLogIn; onPlayerLogIn = function(c) a(c); b.onPlayerLogIn(c); end end
+  if b.onStartUp then local a = onStartUp; onStartUp = function() a(); b.onStartUp(); end end
 end

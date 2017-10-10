@@ -107,12 +107,14 @@ function AvorionBoilerPlate.getUpdateInterval()
   return 5 -- update every 5th second
 end
 
--- this function gets called once each frame, on client and server
+-- when getUpdateInterval() returns false then update() is called every frame
+-- however when getUpdateInterval() returns int, then update() is called every int seconds
 function AvorionBoilerPlate.update(timeStep)
 
 end
 
--- this function gets called once each frame, on server only
+-- when getUpdateInterval() returns false then updateServer() is called every frame
+-- however when getUpdateInterval() returns int, then updateServer() is called every int seconds
 function AvorionBoilerPlate.updateServer(timeStep)
   -- increment this variable every 5th second
   SuperImportantValue = SuperImportantValue + 1
@@ -120,7 +122,8 @@ function AvorionBoilerPlate.updateServer(timeStep)
   modConfig.print('Dirtyredz is',SuperImportantValue,'times cooler!!',logLevels.debug)
 end
 
--- this function gets called once each frame, on client only
+-- when getUpdateInterval() returns false then updateClient() is called every frame
+-- however when getUpdateInterval() returns int, then updateClient() is called every int seconds
 function AvorionBoilerPlate.updateClient(timeStep)
 
 end
