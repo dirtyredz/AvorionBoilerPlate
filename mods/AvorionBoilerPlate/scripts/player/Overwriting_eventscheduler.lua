@@ -7,7 +7,7 @@
 
 --[[ Copy these to the bottom of data/scripts/player/eventscheduler.lua
 
-local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/eventscheduler.lua")
+local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.eventscheduler")
 if not success then print(returned) end
 
 ]]

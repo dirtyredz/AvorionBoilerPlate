@@ -10,12 +10,11 @@
 
 --[[ Copy these to the bottom of data/scripts/player/eventscheduler.lua
 
-local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/Locals_eventscheduler.lua")
+local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.Locals_eventscheduler")
 if not success then print(returned); else events = EventSheduler.addCustomEvents(events); end
 
 ]]
-
-function EventSheduler.addCustomEvents(events)
+function EventScheduler.addCustomEvents(events)
 
  table.insert(events, {schedule = random():getInt(25, 50) * 60, script = "MyAwesomeEvent", arguments = {0}, minimum = 5 * 60, from = 0, to = 500})
 

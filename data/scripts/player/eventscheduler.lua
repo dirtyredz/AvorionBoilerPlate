@@ -26,6 +26,7 @@ local pauseTime = pause
 EventScheduler = {}
 
 function EventScheduler.initialize()
+
     for _, event in pairs(events) do
         event.time = (event.minimum or 5 * 60) + math.random() * event.schedule
     end
@@ -110,19 +111,17 @@ function EventScheduler.restore(times)
     end
 end
 
-
-end
-
--- Everything above this comment is 100% vanilla
--- Here is where we will extend the file so that we can keep clear seperation between vanilla and modded.
+-- IMPORTANT if you notice the following code is INSIDE the if onServer() statment, thier is an "end" at the bottom of the file
 
 -- Extending_eventscheduler
 -- An example of extending the updateServer() function
-local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/Extending_eventscheduler.lua")
+local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.Extending_eventscheduler")
 if not success then print(returned) end
 
-
--- Locals_eventscheduler
+-- Locals_eventscheduler Begin
 -- an example of updating a local variable without overwriting all its related functions
-local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/Locals_eventscheduler.lua")
-if not success then print(returned); else events = EventSheduler.addCustomEvents(events); end
+local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.Locals_eventscheduler")
+if not success then print(returned); else events = EventScheduler.addCustomEvents(events); end
+
+
+end

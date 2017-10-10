@@ -6,7 +6,7 @@
 
 --[[ Copy these to the bottom of data/scripts/player/eventscheduler.lua
 
-local success, returned = pcall(require, "mods/AvorionBoilerPlate/scripts/player/Extending_eventscheduler.lua")
+local success, returned = pcall(require, "mods.AvorionBoilerPlate.scripts.player.Extending_eventscheduler")
 if not success then print(returned) end
 
 ]]
@@ -28,7 +28,10 @@ function EventScheduler.updateServer(timeStep)
   -- Here we get all the players in the sector
   local players = {Sector():getPlayers()}
   -- and here we return the function if thiers only one player in the sector
-  if #players == 1 then return end
+  if #players == 1 then
+    -- print('ONLY ONE PLAYER, SKIPPING') --Uncomment to see that this is working
+    return
+  end
 
   -- and here we call the original updateServer()
   -- You could also do the reverese by placing the OLD function first
